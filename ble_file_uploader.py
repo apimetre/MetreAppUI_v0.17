@@ -149,7 +149,7 @@ class BleUploader():
                                     try:
                                         print('printing event response')
                                         self.print_wrap(f"event: {response}",    self.INDENT_STR, self.CONSOLE_WIDTH)
-                                        if cmd_type in response:
+                                        if cmd_type in response['ack']:
                                             return response['resp'], cmd_counter
                                         else:
                                             continue
