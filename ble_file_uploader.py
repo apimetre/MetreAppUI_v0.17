@@ -1,4 +1,3 @@
-   
 # Python imports
 import ui
 import os
@@ -100,7 +99,7 @@ class BleUploader():
             return int(tz_factor)
         
                     
-        def cmd_fn(out_msg, show_progress = False, cmd_counter = 0, to_counter = 0, warning = False, to_max = 60):
+        def cmd_fn(out_msg, cmd_type, show_progress = False, cmd_counter = 0, to_counter = 0, warning = False, to_max = 60):
             global in_buf
             #print(f"json_text: {out_msg}")
             in_buf = (out_msg + '\n').encode('utf-8')
@@ -124,7 +123,7 @@ class BleUploader():
                             self.py_ble_buffer.buffer(in_chars)
                             in_buf = ''
                         # if events then process them
-                        if len(self.event_queue) and self.py_ble_uart.peripheral:
+                        while len(self.event_queue) and self.py_ble_uart.peripheral:
                             print('processing events')
                             event = self.event_queue.pop()
                          
@@ -150,7 +149,10 @@ class BleUploader():
                                     try:
                                         print('printing event response')
                                         self.print_wrap(f"event: {response}",    self.INDENT_STR, self.CONSOLE_WIDTH)
-                                        return response['resp'], cmd_counter
+                                        if cmd_type in response:
+                                            return response['resp'], cmd_counter
+                                        else:
+                                            continue
                                     except:
                                         print('could not get event response')
                                         continue
@@ -184,7 +186,7 @@ class BleUploader():
             counter = 0
             time.sleep(0.2)
             connect_msg_txt =json.dumps({"cmd":"set_ble_state","active":True})
-            cmd_fn(connect_msg_txt, show_progress = False)
+            cmd_fn(connect_msg_txt, "set_ble_state", show_progress = False)
 
             ble_icon_path = 'images/ble_connected.png'
             self.ble_status_icon_.image = ui.Image.named(ble_icon_path)
@@ -196,19 +198,19 @@ class BleUploader():
             current_time = int(time.time())
             
             out_msg00 =json.dumps({"cmd": "set_time","time": str(current_time)})
-            r00, no_counter = cmd_fn(out_msg00)
+            r00, no_counter = cmd_fn(out_msg00, "set_time")
             
             # Here is command to set timezone/DST
             offset_hrs = calc_utc_offset(current_time)
             time.sleep(2)
             out_msg0 =json.dumps({"cmd": "set_time_offset","offset": str(offset_hrs)})
-            r0, no_counter = cmd_fn(out_msg0)
+            r0, no_counter = cmd_fn(out_msg0, "set_time_offset")
             
 
             time.sleep(0.5)
             out_msg1 =json.dumps({"cmd": "listdir","path": "/sd"})
             try:
-                r1, no_counter = cmd_fn(out_msg1, warning = True, to_max = 120)
+                r1, no_counter = cmd_fn(out_msg1, "listdir",  warning = True, to_max = 120)
                 list_of_dirs = r1['dir']
                 file_sizes = r1['stat']
             except:
@@ -234,7 +236,7 @@ class BleUploader():
             time.sleep(0.5)
             
             out_msg_text =json.dumps({"cmd":"oled", "text":"Uploading..."})
-            cmd_fn(out_msg_text, show_progress = False, warning = True)
+            cmd_fn(out_msg_text, "oled", show_progress = False, warning = True)
                                       
             FLAG = False
             file_wrongsize = []
@@ -245,7 +247,7 @@ class BleUploader():
                 if file.startswith('._'):
                     print('I SEE ' + file)
                     out_msg_del_e =json.dumps({"cmd": "remove", "path":     "/sd/" + file})
-                    r_del, counter = cmd_fn(out_msg_del_e, show_progress = False, warning = True)
+                    r_del, counter = cmd_fn(out_msg_del_e, "remove", show_progress = False, warning = True)
                 elif file.endswith(('.bin', '.json')):
                     if "device" in file:
                         print('I SEE ' + file)
@@ -337,7 +339,7 @@ class BleUploader():
                                     upload_size = os.stat('data_files/uploaded_files/' + file)[6]
                                     if upload_size == file_size:
                                         out_msg_del =json.dumps({"cmd": "remove", "path":     "/sd/" + file})
-                                        r_del, counter = cmd_fn(out_msg_del, show_progress = True, cmd_counter = counter, warning = True)
+                                        r_del, counter = cmd_fn(out_msg_del, "remove", show_progress = True, cmd_counter = counter, warning = True)
 
     
                                     else:
@@ -368,7 +370,7 @@ class BleUploader():
             self.v_['ble_status'].text = ''
             
             out_msg_txt =json.dumps({"cmd":"set_ble_state","active":False})
-            cmd_fn(out_msg_txt, show_progress = False)
+            cmd_fn(out_msg_txt, "set_ble_state", show_progress = False)
 
             #out_msg_tone =json.dumps({"cmd": "avr", "payload": { "cmd": "tone", "freq":"1000", "duration":"1000" }})
             #cmd_fn(out_msg_tone, show_progress = False)
@@ -381,7 +383,7 @@ class BleUploader():
             #cmd_fn(outmsg_t0, show_progress = False)
                       
             out_msg2 =json.dumps({"cmd": "disconnect_ble"})
-            rstring, no_counter = cmd_fn(out_msg2, show_progress = True)
+            rstring, no_counter = cmd_fn(out_msg2, "disconnect_ble", show_progress = True)
             self.console_box_.text = rstring
             ConsoleAlert('Remove Mouthpiece!', self.v_)
             ble_icon_path = 'images/ble_off.png'
