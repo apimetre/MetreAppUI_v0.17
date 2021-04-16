@@ -200,7 +200,7 @@ class BleUploader():
             
             # Here is command to set timezone/DST
             offset_hrs = calc_utc_offset(current_time)
-            time.sleep(0.2)
+            time.sleep(2)
             out_msg0 =json.dumps({"cmd": "set_time_offset","offset": str(offset_hrs)})
             r0, no_counter = cmd_fn(out_msg0)
             
