@@ -28,11 +28,12 @@ from lib.UIFeatures import ConsoleAlert
 
 
 class BleUploader():
-    def __init__(self, progress_bar_, console_box_, ble_status_icon_, v_):
+    def __init__(self, progress_bar_, console_box_, ble_status_icon_, v_, version_id):
         self.progress_bar_ = progress_bar_
         self.console_box_ = console_box_
         self.ble_status_icon_ = ble_status_icon_
         self.v_ = v_
+        self.version_id = version_id
         self.POPOVER_WIDTH = 500
         self.SEND_TEXT_VIEW_HEIGHT = 30
         self.POPOVER_DIALOG_NAME = 'km_ble_test.py'
@@ -363,7 +364,16 @@ class BleUploader():
             # Now use FileConverter
             fc = FileConverter(self.progress_bar_, self.console_box_, file_wrongsize)
             cwd = os.getcwd()
-            conversion_status = fc.match_files(cwd + '/' + 'data_files/uploaded_files', cwd + '/' +'data_files/processed_files', cwd + '/' +'data_files/converted_files')
+            print('THIS IS THE CURRENT DIR')
+            print(cwd)
+            try:
+               base_dir = cwd
+               os.listdir(base_dir + '/data_files/uploaded_files')
+               
+            except:
+               base_dir = cwd + '/MetreiOS/MetreAppUI_' + self.version_id 
+               os.listdir(base_dir + '/data_files/uploaded_files') 
+            conversion_status = fc.match_files(base_dir + '/' + 'data_files/uploaded_files', base_dir + '/' +'data_files/processed_files', base_dir + '/' +'data_files/converted_files')
             self.console_box_.text = 'Transfer of ' + str(len(file_list)) + ' out of ' + str(len(file_list)) + ' test files complete'
             self.progress_bar_.update_progress_bar(1)
             self.ble_status_icon_.background_color = 'white'
