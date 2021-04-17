@@ -373,6 +373,7 @@ class BleUploader():
             except:
                base_dir = cwd + '/MetreiOS/MetreAppUI_' + self.version_id 
                os.listdir(base_dir + '/data_files/uploaded_files') 
+            print(base_dir)
             conversion_status = fc.match_files(base_dir + '/' + 'data_files/uploaded_files', base_dir + '/' +'data_files/processed_files', base_dir + '/' +'data_files/converted_files')
             self.console_box_.text = 'Transfer of ' + str(len(file_list)) + ' out of ' + str(len(file_list)) + ' test files complete'
             self.progress_bar_.update_progress_bar(1)
