@@ -92,7 +92,7 @@ def button_nav(sender):
                 settings_page = pushed_view['view1']
                 s_table=settings_page['tableview1']
                 d_table = settings_page['dt_table']
-                ble_delegate = BleDelegate(settings_page, s_table, d_table, cwd, bokeh_view, APP_VERSION)
+                ble_delegate = BleDelegate(settings_page, s_table, d_table, cwd, bokeh_view)
                 
             if sender.title =='Help':
                 
@@ -136,7 +136,7 @@ def bleStatus(sender):
         ble_status.text= 'Connecting...'
         #ble_icon.image = ui.Image.named(ble_icon_path)
 
-        ble_file_uploader = BleUploader(progress_bar, app_console, ble_status_icon, v)
+        ble_file_uploader = BleUploader(progress_bar, app_console, ble_status_icon, v, APP_VERSION)
         ready_status = ble_file_uploader.execute_transfer()
         
         if ready_status:
