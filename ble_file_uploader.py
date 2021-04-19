@@ -300,14 +300,16 @@ class BleUploader():
                                                 self.print_wrap(f"no_cmd_event: {response}",    self.INDENT_STR, self.CONSOLE_WIDTH)
                                                 if response['ok']:
                                                     try:
-                                                         result_resp.append(response['resp'])
+                                                         result_resp.append(str(response['resp']))
                                                          self.print_wrap(f"resp_event: {response}",   self.INDENT_STR, self.CONSOLE_WIDTH)
                                                     except:
-                                                        result_resp.append(response['ack'])
+                                                        result_resp.append(str(response['ack']))
                                                         self.print_wrap(f"ack_event: {response}",   self.INDENT_STR, self.CONSOLE_WIDTH)
                                                 else:
+                                                    print("RESPONSE IS NOT OKAY")
                                                     break
                                         except:
+                                            # This is where you need to fix the alert in case there is NOT a ble issue---but maybe break explicitly
                                             self.console_box_.text = "Ooops. MetreAce needs to be restarted. \n Eject mouthpiece, close the phone app, and try again"
                                             break
     
@@ -334,7 +336,7 @@ class BleUploader():
                                 print(f"Ctrl-C Exiting: {e}")
                                 break
                            
-                            if len(result_resp) > 2:
+                            if "{'file_path': './result.bin'}" in result_resp:
                                
                                 try:
                                     shutil.move('./result.bin', 'data_files/uploaded_files/' + file)
@@ -352,8 +354,10 @@ class BleUploader():
                                     if file.endswith('bin'):
                                         counter = counter + 1
                                         self.progress_bar_.update_progress_bar(counter*.002)
-                                        break
+                                        continue
+                                        #break
                                 except:
+                                    print('BROKE OUT OF TRANSFER AND REMOVAL ATTEMPT')
                                     break
                         if FLAG:
                            counter = 0
@@ -374,6 +378,7 @@ class BleUploader():
             except:
                base_dir = cwd + '/MetreiOS/MetreAppUI_' + self.version_id 
                os.listdir(base_dir + '/data_files/uploaded_files') 
+            print(base_dir)
             print(base_dir)
             conversion_status = fc.match_files(base_dir + '/' + 'data_files/uploaded_files', base_dir + '/' +'data_files/processed_files', base_dir + '/' +'data_files/converted_files')
             self.console_box_.text = 'Transfer of ' + str(len(file_list)) + ' out of ' + str(len(file_list)) + ' test files complete'
