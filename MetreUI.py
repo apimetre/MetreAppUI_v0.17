@@ -72,6 +72,7 @@ ble_status_icon = v['ble_status_icon']
 
 cwd = os.getcwd()
 
+
 # This sets up main navigation view
 
 def button_nav(sender):
@@ -266,8 +267,13 @@ def main(app_console, log):
             cloud_progress_bar.update_progress_bar(0.005*i + 0.15)
             print(i)
             time.sleep(0.5)
-    source_path = 'data_files/converted_files/'
-
+    print(cwd)
+    try:
+        source_path = './data_files/converted_files/'
+        all_src_files = os.listdir(source_path)
+    except:
+        source_path = cwd + '/MetreiOS/MetreAppUI_' + APP_VERSION + '/data_files/converted_files/'
+        all_src_files = os.listdir(source_path)
     files = []
     all_src_files = os.listdir(source_path)
     for file in all_src_files:
