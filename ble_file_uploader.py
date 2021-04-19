@@ -44,8 +44,9 @@ class BleUploader():
         
         # Global variables
         self.in_buf =b''
+        self.cwd = os.getcwd()
         self.event_queue = []
-        self.py_ble_buffer = LineBuffer('py_ble', self.event_queue,   log_path_name='./', DEBUG=self.DEBUG)
+        self.py_ble_buffer = LineBuffer('py_ble', self.event_queue,   log_path_name=self.cwd +'/data_files/dat_files/', DEBUG=self.DEBUG)
         # Initialize Bluetoooth
         self.py_ble_uart = PythonistaUartBleClient('py_ble', self.event_queue,    self.PERIPHERAL_PREAMBLE, self.py_ble_buffer, DEBUG=self.DEBUG)
         
