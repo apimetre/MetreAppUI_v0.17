@@ -267,15 +267,12 @@ def main(app_console, log):
             cloud_progress_bar.update_progress_bar(0.005*i + 0.15)
             print(i)
             time.sleep(0.5)
+    print('CWD FROM MAIN IS ')
     print(cwd)
-    try:
-        source_path = './data_files/converted_files/'
-        all_src_files = os.listdir(source_path)
-    except:
-        source_path = cwd + '/MetreiOS/MetreAppUI_' + APP_VERSION + '/data_files/converted_files/'
-        all_src_files = os.listdir(source_path)
-    files = []
+
+    source_path = cwd + '/data_files/converted_files/'
     all_src_files = os.listdir(source_path)
+    files = []
     for file in all_src_files:
         if ".gitkeep" not in file:
             files.append(file)
