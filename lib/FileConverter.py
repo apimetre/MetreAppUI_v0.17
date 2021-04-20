@@ -28,7 +28,7 @@ class FileConverter():
         return data
 
 
-    def match_files(self, file_source, file_dest, json_dest):
+    def match_files(self, file_source, file_dest, json_dest, unpaired_file_dir):
         all_uploads = os.listdir(file_source)
         for file in all_uploads:
             # Current fill 
@@ -41,11 +41,17 @@ class FileConverter():
                 #try:
                # Look for matching json file (containing metadata)
                 try:
-                    metadata_json = file_source + '/' + id_num + '.json'
-                    with open(metadata_json) as f:
-                        mdata_dict = json.load(f)
-                        sensor = mdata_dict['fuel_cell_sn'].split('#')[1]
-                        instr = mdata_dict['device_sn'].split('#')[1]
+                   
+                    try:
+                        metadata_json = file_source + '/' + id_num + '.json'
+                        with open(metadata_json) as f:
+                            mdata_dict = json.load(f)
+                    except:
+                        metadata_json = unpaired_file_dir + '/' + id_num + '.json'
+                        with open(metadata_json) as f:
+                            mdata_dict = json.load(f)
+                    sensor = mdata_dict['fuel_cell_sn'].split('#')[1]
+                    instr = mdata_dict['device_sn'].split('#')[1]
                     # Do file bin to float conversion
                     data_list = np.array(self.datfile_to_dict(file_source + '/' + file ))     
                     if len(self.bad_transfers) > 0:
@@ -72,7 +78,7 @@ class FileConverter():
                         json.dump(mdata_dict, outfile)
                 except:
                     self.console_box_.text = "One of your test files can't be processed. Mouthpiece ejected too soon?"
-                    shutil.move(file_source + '/'+ file, file_dest + '/' + file)
+                    shutil.move(file_source + '/'+ file, unpaired_file_dir + '/' + file)
                     time.sleep(3)
                     continue
         match_status = True
