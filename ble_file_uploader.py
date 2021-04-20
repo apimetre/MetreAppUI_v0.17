@@ -323,10 +323,10 @@ class BleUploader():
                                                     break
                                         except:
                                             # This is where you need to fix the alert in case there is NOT a ble issue---but maybe break explicitly
-                                            self.console_box_.text = "Ooops. MetreAce needs to be restarted. \n Eject mouthpiece, close the phone app, and try again"
+                                            #self.console_box_.text = "Ooops. MetreAce needs to be restarted. \n Eject mouthpiece, close the phone app, and try again"
                                             # self.py_ble_uart.peripheral = False
-                                            
-                                            break
+                                            pass
+                                            #break
     
                                     else:
                                         print(str(event))
@@ -342,7 +342,7 @@ class BleUploader():
                                 time.sleep(0.2)
                                 counter = counter + 1
                                 timeout_counter = timeout_counter + 1
-                                if timeout_counter > 1000:
+                                if timeout_counter > 1200:
                                     self.console_box_.text = "One of your tests could not be processed"
                                     break
                                 
