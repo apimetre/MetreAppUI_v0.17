@@ -328,8 +328,8 @@ class BleUploader():
                                 time.sleep(0.2)
                                 counter = counter + 1
                                 timeout_counter = timeout_counter + 1
-                                if timeout_counter > 200:
-                                    self.console_box_.text = "Ooops. MetreAce needs to be restarted. \n Eject mouthpiece, close the phone app, and try again"
+                                if timeout_counter > 1000:
+                                    self.console_box_.text = "One of your tests could not be processed"
                                     break
                                 
                             except KeyboardInterrupt as e:
