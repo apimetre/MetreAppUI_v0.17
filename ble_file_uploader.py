@@ -324,6 +324,8 @@ class BleUploader():
                                         except:
                                             # This is where you need to fix the alert in case there is NOT a ble issue---but maybe break explicitly
                                             self.console_box_.text = "Ooops. MetreAce needs to be restarted. \n Eject mouthpiece, close the phone app, and try again"
+                                            self.py_ble_uart.peripheral = False
+                                            
                                             break
     
                                     else:
@@ -355,13 +357,15 @@ class BleUploader():
                                 try:
                                     shutil.move('./result.bin', self.base_dir + '/data_files/uploaded_files/' + file)
                                     upload_size = os.stat(self.base_dir + '/data_files/uploaded_files/' + file)[6]
+                                    print('Sent move command')
                                     if upload_size == file_size:
                                         out_msg_del =json.dumps({"cmd": "remove", "path":     "/sd/" + file})
                                         r_del, counter = cmd_fn(out_msg_del, "remove", show_progress = True, cmd_counter = counter, warning = True)
+                                        print('Sent remove command')
 
     
                                     else:
-                                        print('FILE IS THE WRONG SIZE ')
+                                        print('FILE IS THE WRONG SIZE')
                                         size_diff = file_size - upload_size
                                         file_wrongsize.append(file)
                                         file_wrongsize.append(size_diff)
