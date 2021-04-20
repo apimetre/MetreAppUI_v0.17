@@ -324,7 +324,7 @@ class BleUploader():
                                         except:
                                             # This is where you need to fix the alert in case there is NOT a ble issue---but maybe break explicitly
                                             self.console_box_.text = "Ooops. MetreAce needs to be restarted. \n Eject mouthpiece, close the phone app, and try again"
-                                            self.py_ble_uart.peripheral = False
+                                            # self.py_ble_uart.peripheral = False
                                             
                                             break
     
