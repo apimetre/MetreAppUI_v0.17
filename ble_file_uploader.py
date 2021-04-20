@@ -1,4 +1,3 @@
-#
 # Python imports
 import ui
 import os
@@ -376,6 +375,9 @@ class BleUploader():
                                         #continue
                                         break  #Was originally break
                                         # No break and no continue makes it exit and not remove the bin file
+                                    elif file.endswith('json'):
+                                        pass
+                                        
                                 except:
                                     print('BROKE OUT OF TRANSFER AND REMOVAL ATTEMPT')
                                     break
