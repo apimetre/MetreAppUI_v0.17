@@ -184,6 +184,7 @@ class BleUploader():
         if self.py_ble_uart.peripheral:
             self.v_['ble_status'].text = 'Connected'
             self.console_box_.text = "Connected"
+            print('will be using ' + self.cwd + '/data_files/dat_files/ as current working directory for writing log files')
             global counter
             counter = 0
             time.sleep(0.2)
