@@ -49,11 +49,11 @@ class BleUploader():
         
         try:
             self.base_dir = self.cwd
-            os.listdir(base_dir + '/data_files/uploaded_files')
+            os.listdir(self.base_dir + '/data_files/uploaded_files')
                
         except:
             self.base_dir = self.cwd + '/MetreiOS/MetreAppUI_' + self.version_id 
-            os.listdir(base_dir + '/data_files/uploaded_files') 
+            os.listdir(self.base_dir + '/data_files/uploaded_files') 
         
 
         
