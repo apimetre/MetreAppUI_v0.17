@@ -1,3 +1,4 @@
+#
 # Python imports
 import ui
 import os
@@ -45,8 +46,19 @@ class BleUploader():
         # Global variables
         self.in_buf =b''
         self.cwd = os.getcwd()
+        
+        try:
+            self.base_dir = self.cwd
+            os.listdir(base_dir + '/data_files/uploaded_files')
+               
+        except:
+            self.base_dir = self.cwd + '/MetreiOS/MetreAppUI_' + self.version_id 
+            os.listdir(base_dir + '/data_files/uploaded_files') 
+        
+
+        
         self.event_queue = []
-        self.py_ble_buffer = LineBuffer('py_ble', self.event_queue,   log_path_name=self.cwd +'/data_files/dat_files/', DEBUG=self.DEBUG)
+        self.py_ble_buffer = LineBuffer('py_ble', self.event_queue,   log_path_name=self.base_dir +'/data_files/dat_files/', DEBUG=self.DEBUG)
         # Initialize Bluetoooth
         self.py_ble_uart = PythonistaUartBleClient('py_ble', self.event_queue,    self.PERIPHERAL_PREAMBLE, self.py_ble_buffer, DEBUG=self.DEBUG)
         
@@ -373,16 +385,10 @@ class BleUploader():
             cwd = os.getcwd()
             print('THIS IS THE CURRENT DIR')
             print(cwd)
-            try:
-               base_dir = cwd
-               os.listdir(base_dir + '/data_files/uploaded_files')
-               
-            except:
-               base_dir = cwd + '/MetreiOS/MetreAppUI_' + self.version_id 
-               os.listdir(base_dir + '/data_files/uploaded_files') 
-            print(base_dir)
-            print(base_dir)
-            conversion_status = fc.match_files(base_dir + '/' + 'data_files/uploaded_files', base_dir + '/' +'data_files/processed_files', base_dir + '/' +'data_files/converted_files')
+            print('THIS IS SELF.BASEDIR')
+            print(self.base_dir)
+
+            conversion_status = fc.match_files(self.base_dir + '/' + 'data_files/uploaded_files', self.base_dir + '/' +'data_files/processed_files', self.base_dir + '/' +'data_files/converted_files')
             self.console_box_.text = 'Transfer of ' + str(len(file_list)) + ' out of ' + str(len(file_list)) + ' test files complete'
             self.progress_bar_.update_progress_bar(1)
             self.ble_status_icon_.background_color = 'white'
