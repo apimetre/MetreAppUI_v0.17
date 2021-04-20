@@ -91,7 +91,7 @@ class FileConverter():
         time.sleep(0.5)
     
         # Match unpaired files    
-        match_unpaired()
+        self.match_unpaired()
         match_status = True
         self.console_box_.text = 'Starting data processing...'
         return match_status
