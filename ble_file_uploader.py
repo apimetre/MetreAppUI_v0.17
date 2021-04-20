@@ -390,7 +390,7 @@ class BleUploader():
             print('THIS IS SELF.BASEDIR')
             print(self.base_dir)
 
-            conversion_status = fc.match_files(self.base_dir + '/data_files/uploaded_files', self.base_dir + '/data_files/processed_files', self.base_dir + '/data_files/converted_files', self.base_dir + '/data_files/unpaired_files)
+            conversion_status = fc.match_files(self.base_dir + '/data_files/uploaded_files', self.base_dir + '/data_files/processed_files', self.base_dir + '/data_files/converted_files', self.base_dir + '/data_files/unpaired_files')
             self.console_box_.text = 'Transfer of ' + str(len(file_list)) + ' out of ' + str(len(file_list)) + ' test files complete'
             self.progress_bar_.update_progress_bar(1)
             self.ble_status_icon_.background_color = 'white'
