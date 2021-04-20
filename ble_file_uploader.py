@@ -353,14 +353,15 @@ class BleUploader():
                                 print('ENTERING TRANSFER AND REMOVAL ATTEMPT')
                                
                                 try:
-                                    shutil.move('./result.bin', 'data_files/uploaded_files/' + file)
-                                    upload_size = os.stat('data_files/uploaded_files/' + file)[6]
+                                    shutil.move('./result.bin', self.base_dir + '/data_files/uploaded_files/' + file)
+                                    upload_size = os.stat(self.base_dir + '/data_files/uploaded_files/' + file)[6]
                                     if upload_size == file_size:
                                         out_msg_del =json.dumps({"cmd": "remove", "path":     "/sd/" + file})
                                         r_del, counter = cmd_fn(out_msg_del, "remove", show_progress = True, cmd_counter = counter, warning = True)
 
     
                                     else:
+                                        print('FILE IS THE WRONG SIZE ')
                                         size_diff = file_size - upload_size
                                         file_wrongsize.append(file)
                                         file_wrongsize.append(size_diff)
@@ -368,8 +369,8 @@ class BleUploader():
                                     if file.endswith('bin'):
                                         counter = counter + 1
                                         self.progress_bar_.update_progress_bar(counter*.002)
-                                        continue
-                                        #break
+                                        #continue
+                                        #break  #Was originally break
                                 except:
                                     print('BROKE OUT OF TRANSFER AND REMOVAL ATTEMPT')
                                     break
