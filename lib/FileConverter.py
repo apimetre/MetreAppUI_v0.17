@@ -37,7 +37,6 @@ class FileConverter():
             if 'bin' in file:
                 id_num, ext = file.split('.')
 
-                
                 #try:
                # Look for matching json file (containing metadata)
                 try:
@@ -81,6 +80,10 @@ class FileConverter():
                     shutil.move(file_source + '/'+ file, unpaired_file_dir + '/' + file)
                     time.sleep(3)
                     continue
+        remaining_files = os.listdir(file_source)
+        for file in remaining_files:
+            shutil.move(file_source + '/'+ file, unpaired_file_dir + '/' + file)
+   
         match_status = True
         self.console_box_.text = 'Starting data processing...'
         return match_status
