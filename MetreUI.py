@@ -355,7 +355,7 @@ def main(app_console, log):
                except:
                    app_console.text = 'Oops...something was wrong with the test from ' + dt + ' and it could not be processed'
                time.sleep(1)
-               shutil.move(source_path + file, 'data_files/processed_files' + '/' + file)
+               shutil.move(source_path + file, source_path +'/data_files/processed_files' + '/' + file)
            else:
                pass
            time.sleep(1)
