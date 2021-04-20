@@ -101,7 +101,7 @@ class BleUploader():
             return int(tz_factor)
         
                     
-        def cmd_fn(out_msg, cmd_type, show_progress = False, cmd_counter = 0, to_counter = 0, warning = False, to_max = 60):
+        def cmd_fn(out_msg, cmd_type, show_progress = False, cmd_counter = 0, to_counter = 0, warning = False, to_max = 80):
             global in_buf
             #print(f"json_text: {out_msg}")
             in_buf = (out_msg + '\n').encode('utf-8')
@@ -249,7 +249,7 @@ class BleUploader():
                 if file.startswith('._'):
                     print('I SEE ' + file)
                     out_msg_del_e =json.dumps({"cmd": "remove", "path":     "/sd/" + file})
-                    r_del, counter = cmd_fn(out_msg_del_e, "remove", show_progress = False, warning = True)
+                    r_del, counter = cmd_fn(out_msg_del_e, "remove", show_progress = False, warning = True, to_max = 150)
                 elif file.endswith(('.bin', '.json')):
                     if "device" in file:
                         print('I SEE ' + file)
@@ -327,7 +327,7 @@ class BleUploader():
                                 time.sleep(0.2)
                                 counter = counter + 1
                                 timeout_counter = timeout_counter + 1
-                                if timeout_counter > 120:
+                                if timeout_counter > 200:
                                     self.console_box_.text = "Ooops. MetreAce needs to be restarted. \n Eject mouthpiece, close the phone app, and try again"
                                     break
                                 
@@ -337,6 +337,7 @@ class BleUploader():
                                 break
                            
                             if "{'file_path': './result.bin'}" in result_resp:
+                                print('ENTERING TRANSFER AND REMOVAL ATTEMPT')
                                
                                 try:
                                     shutil.move('./result.bin', 'data_files/uploaded_files/' + file)
