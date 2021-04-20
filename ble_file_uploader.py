@@ -370,7 +370,8 @@ class BleUploader():
                                         counter = counter + 1
                                         self.progress_bar_.update_progress_bar(counter*.002)
                                         #continue
-                                        #break  #Was originally break
+                                        break  #Was originally break
+                                        # No break and no continue makes it exit and not remove the bin file
                                 except:
                                     print('BROKE OUT OF TRANSFER AND REMOVAL ATTEMPT')
                                     break
