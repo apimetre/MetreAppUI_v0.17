@@ -1,4 +1,4 @@
-# Metre_AppUI_v0.16
+# Metre_AppUI_v0.17
 
 1) MainMetre.py is the installer/code launcher. **If the root directory (MetreiOS) already exists** on your device, it will look for metre_ios_install_config.json and launch the most current version of the app (from a subdirectory in MetreiOS) OR it will download the most current version of the app from GitHub, installed as a subdirectory in MetreiOS. If an older version of the app exists, the log files (for remembering the device, timezone, storage of previous data) will get copied over to the new app subdirectory. **If the MetreiOS subdirectory does not exist** it will download that root directory and make metre_ios_install_config.json (version # is hard-coded into a dictionary written in MainMetre.py). The script that "does stuff" and makes the UI is the script MetreUI.py
 
@@ -10,13 +10,16 @@
 
 5) If multiple files are present in temp_resources, multiple files will be uploaded.
 
-## Updates from v0.15:
+## Updates from v0.16:
 
-1) Add screen lockout to prevent phone from locking while app is running in the forefront (10 min max for running iin the background)
-2) Increased timeout counter from 15 to 60 for a response (if files > 20, can take more than 30 seconds to get response from listdir)
+1) Implemented customizable timeout counter and increased wait times to get file (file transfer slows down with bluetooth)
+2) Added dat_files folder to data_files so logs don't get written to the main script folder
+3) Added unpaired_files folder to move unpaired files; implmeneted match_unpaired function in FileConverter.py to match unpaired files (i.e. in case of interrupted BLE file upload)
+4) File removal is now initiated when results.bin file shows up (as opposed to counting the responses). This makes the system more robust to late json messages
+5) Added set_ble_state command before and after bluetooth connection to prevent "Eject" from interrupting commands; app returns the instrument to its previous state to deliver the Eject message and tone once it's finished
 
 
 ## To add
-1) File size check (for s2_sample generated files that don't terminate correctly and thus never finish transferring)
-2) Check instrument state --when km3v11_32u4 comes out (i.e. check to see if instrument is "SET" before sending commands)
-3) Check battery levels
+1) Simplify UI (see notes)
+2) Prevent mulitple launches from shortcut
+3) More specific messages regarding why a file can't be processed
