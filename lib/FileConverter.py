@@ -124,10 +124,9 @@ class FileConverter():
                     
                     # Move processed bin and json out of directory
                     shutil.move(self.unpaired_file_dir + '/'+ file, self.file_dest + '/' + file)
-                    shutil.move(metadata_json, self.file_dest + '/' + id_num + '.json')
-                    current_percent_fill = self.progress_bar_.fillbar_.width/ self.progress_bar_.fullbar_
-                    self.progress_bar_.update_progress_bar((all_uploads.index(file) + 1)*.01 + current_percent_fill)
+                    shutil.move(metadata_json, self.file_dest + '/' + id_num + '.json')                 
                     with open(export_fpath, 'w') as outfile:
                         json.dump(mdata_dict, outfile)
                 except:
+                   
                     continue
