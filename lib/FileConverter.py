@@ -128,5 +128,4 @@ class FileConverter():
                     with open(export_fpath, 'w') as outfile:
                         json.dump(mdata_dict, outfile)
                 except:
-                   
                     continue
