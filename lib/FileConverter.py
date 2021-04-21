@@ -88,7 +88,7 @@ class FileConverter():
         for file in remaining_files:
             shutil.move(self.file_source + '/'+ file, self.unpaired_file_dir + '/' + file)
    
-        time.sleep(0.5)
+        time.sleep(1.5)
     
         # Match unpaired files    
         self.match_unpaired()
@@ -98,6 +98,8 @@ class FileConverter():
     
     def match_unpaired(self):
         all_unpaired_uploads = os.listdir(self.unpaired_file_dir)
+        print('THESE ARE THE UNPAIRED UPLOADS)
+        print(all_unpaired_uploads)
         for file in all_unpaired_uploads:
             if 'bin' in file:
                 id_num, ext = file.split('.')
@@ -110,13 +112,8 @@ class FileConverter():
                     instr = mdata_dict['device_sn'].split('#')[1]
                     # Do file bin to float conversion
                     data_list = np.array(self.datfile_to_dict(self.file_source + '/' + file ))     
-                    if len(self.bad_transfers) > 0:
-                        file_ix = [idx for idx, s in enumerate(self.bad_transfers) if id_num in s]
-                        bad_file_name = [self.bad_transfers[i] for i in file_ix] 
-                        bad_file_size = [self.bad_transfers[i+1] for i in file_ix] 
-                        mdata_dict['Upload_Issues'] = bad_file_name + bad_file_list
-                    else:
-                        mdata_dict['Upload_Issues'] = []
+
+                    mdata_dict['Upload_Issues'] = []
                     mdata_dict['data'] = list(data_list)
                     mdata_dict['new_baseline'] = 0
                     id_string = id_num + '-' + str(instr) + '-' + str(sensor)
