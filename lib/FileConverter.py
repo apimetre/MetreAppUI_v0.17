@@ -111,7 +111,7 @@ class FileConverter():
                     sensor = mdata_dict['fuel_cell_sn'].split('#')[1]
                     instr = mdata_dict['device_sn'].split('#')[1]
                     # Do file bin to float conversion
-                    data_list = np.array(self.datfile_to_dict(self.file_source + '/' + file ))     
+                    data_list = np.array(self.datfile_to_dict(self.unpaired_file_dir + '/' + file ))     
 
                     mdata_dict['Upload_Issues'] = []
                     mdata_dict['data'] = list(data_list)
