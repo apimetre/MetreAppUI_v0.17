@@ -213,7 +213,7 @@ def popUpView(sender):
         newWindow.load_html(loading_html)
         logData = json.dumps(log)
         try:
-            tzData = json.loads('log/timezone_settings.json')
+            tzData = json.loads(cwd + 'log/timezone_settings.json')
         except:
             tzData = json.dumps({'timezone': 'US/Pacific'})
         response = requests.post(url, files = [('json_file', ('log.json', logData, 'application/json')), ('tz_info', ('tz.json', tzData, 'application/json'))])
@@ -338,7 +338,7 @@ def main(app_console, log):
                               'Instr': response_json['instrument']}
                    for key, value in log.items():
                       log[key].append(newlog[key])
-                   with open("log/log_003.json", "w") as outfile:
+                   with open(cwd + "/log/log_003.json", "w") as outfile:
                       json.dump(log, outfile)
                    acval, etime, weektime, varray, log = getData()
                    testdate_box.text = max(etime).strftime("%b %d, %Y, %I:%M %p")
